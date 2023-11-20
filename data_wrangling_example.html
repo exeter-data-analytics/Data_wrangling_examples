@@ -160,7 +160,7 @@ $ Comments              &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "A
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># change case in sex column using stringr</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">str_to_lower</span>(sex), </span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># take first element of species column string using stringr and purrr</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">species =</span> <span class="fu">str_split</span>(species, <span class="at">pattern =</span> <span class="st">" "</span>) <span class="sc">%&gt;%</span> <span class="fu">map</span>(.,<span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">unlist</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">species =</span> <span class="fu">str_split_i</span>(species, <span class="at">pattern =</span> <span class="st">" "</span>, <span class="at">i =</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove nas in sex column using dplyr</span></span>
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sex))</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
@@ -225,6 +225,15 @@ $ Comments              &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "A
 </div>
 </div>
 </section>
+</section>
+<section id="how-to-learn-more" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-learn-more">How to learn more</h3>
+<ul>
+<li>Each tidyverse package has great documentation and useful cheatsheets, available via <a href="https://www.tidyverse.org/">the tidyverse website</a></li>
+<li>The book <a href="https://r4ds.hadley.nz/">R for Data Science</a>, which is available online for free, explains how to get your data into R, get it into the most useful structure, transform and visualize it.</li>
+<li>For helpful visualisations of how tidyverse functions transform data structures, check out <a href="https://www.garrickadenbuie.com/project/tidyexplain/">Garrick Aden-Buie’s tidyexplain</a></li>
+<li>Liza Wood, now part of the Exeter Data Analytics Hub, has a great tutorial on the tidyverse <a href="https://liza-wood.github.io/tidyverse_intro/index.html">on her website</a></li>
+</ul>
 </section>
 <section id="some-useful-functions" class="level3">
 <h3 class="anchored" data-anchor-id="some-useful-functions">Some useful functions</h3>
@@ -354,7 +363,7 @@ $ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>To add a column</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>penguins_example <span class="sc">%&lt;&gt;%</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="st">"unkown"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="st">"unknown"</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins_example)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -377,7 +386,7 @@ $ sex               &lt;chr&gt; "MALE", "FEMALE", "FEMALE", NA, "FEMALE", "MALE"
 $ nitrogen          &lt;dbl&gt; NA, 8.94956, 8.36821, NA, 8.76651, 8.66496, 9.18718,…
 $ carbon            &lt;dbl&gt; NA, -24.69454, -25.33302, NA, -25.32426, -25.29805, …
 $ comments          &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "Adult not…
-$ year              &lt;chr&gt; "unkown", "unkown", "unkown", "unkown", "unkown", "u…</code></pre>
+$ year              &lt;chr&gt; "unknown", "unknown", "unknown", "unknown", "unknown…</code></pre>
 </div>
 </div>
 </section>
@@ -445,46 +454,14 @@ $ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 </div>
 </section>
-<section id="stringrstr_to_lower-1" class="level4">
-<h4 class="anchored" data-anchor-id="stringrstr_to_lower-1">stringr::str_to_lower()</h4>
-<p>Change the contents of a column to lower case</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>penguins_example <span class="sc">%&lt;&gt;%</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sex =</span> <span class="fu">str_to_lower</span>(sex))</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins_example)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 344
-Columns: 18
-$ study_name        &lt;chr&gt; "PAL0708", "PAL0708", "PAL0708", "PAL0708", "PAL0708…
-$ sample_number     &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1…
-$ species           &lt;chr&gt; "Adelie Penguin (Pygoscelis adeliae)", "Adelie Pengu…
-$ region            &lt;chr&gt; "Anvers", "Anvers", "Anvers", "Anvers", "Anvers", "A…
-$ island            &lt;chr&gt; "Torgersen", "Torgersen", "Torgersen", "Torgersen", …
-$ stage             &lt;chr&gt; "Adult, 1 Egg Stage", "Adult, 1 Egg Stage", "Adult, …
-$ individual_id     &lt;chr&gt; "N1A1", "N1A2", "N2A1", "N2A2", "N3A1", "N3A2", "N4A…
-$ clutch_completion &lt;chr&gt; "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No"…
-$ date_egg          &lt;date&gt; 2007-11-11, 2007-11-11, 2007-11-16, 2007-11-16, 200…
-$ culmen_length_mm  &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, …
-$ culmen_depth_mm   &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, …
-$ flipper_length_mm &lt;dbl&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186…
-$ body_mass_g       &lt;dbl&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, …
-$ sex               &lt;chr&gt; "male", "female", "female", NA, "female", "male", "f…
-$ nitrogen          &lt;dbl&gt; NA, 8.94956, 8.36821, NA, 8.76651, 8.66496, 9.18718,…
-$ carbon            &lt;dbl&gt; NA, -24.69454, -25.33302, NA, -25.32426, -25.29805, …
-$ comments          &lt;chr&gt; "Not enough blood for isotopes.", NA, NA, "Adult not…
-$ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…</code></pre>
-</div>
-</div>
-</section>
 <section id="dplyrselect" class="level4">
 <h4 class="anchored" data-anchor-id="dplyrselect">dplyr::select()</h4>
 <p>Keep certain columns</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>penguins_tiny <span class="ot">&lt;-</span> penguins_example <span class="sc">%&gt;%</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(individual_id, sex, body_mass_g)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins_tiny)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>penguins_tiny <span class="ot">&lt;-</span> penguins_example <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(individual_id, sex, body_mass_g)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins_tiny)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 3
@@ -495,10 +472,10 @@ $ body_mass_g   &lt;dbl&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 
 </div>
 <p>Remove certain columns</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>penguins_tiny2 <span class="ot">&lt;-</span> penguins_example <span class="sc">%&gt;%</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(study_name, sample_number, region, comments))</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins_tiny2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>penguins_tiny2 <span class="ot">&lt;-</span> penguins_example <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">c</span>(study_name, sample_number, region, comments))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins_tiny2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 14
@@ -588,8 +565,8 @@ $ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>penguins_tiny <span class="sc">%&lt;&gt;%</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sex))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>penguins_tiny <span class="sc">%&lt;&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(sex))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -642,11 +619,12 @@ $ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 </div>
 </section>
-<section id="tidyrpivot_wider" class="level4">
-<h4 class="anchored" data-anchor-id="tidyrpivot_wider">tidyr::pivot_wider()</h4>
+<section id="tidyrpivot_longer" class="level4">
+<h4 class="anchored" data-anchor-id="tidyrpivot_longer">tidyr::pivot_longer()</h4>
+<p>Transform data from wide to long (each observation in a single row)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>penguins_isotopes_tiny <span class="ot">&lt;-</span> penguins_example <span class="sc">%&gt;%</span> </span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, individual_id, carbon, nitrogen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>penguins_isotopes_tiny <span class="ot">&lt;-</span> penguins_example <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, individual_id, carbon, nitrogen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -701,14 +679,15 @@ $ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>penguins_isotopes_tiny <span class="sc">%&lt;&gt;%</span> </span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> carbon<span class="sc">:</span>nitrogen, </span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"isotope"</span>, </span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>penguins_isotopes_tiny <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> carbon<span class="sc">:</span>nitrogen, </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"isotope"</span>, </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"value"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="dplyrgroup_by-dplyrsummarise" class="level4">
 <h4 class="anchored" data-anchor-id="dplyrgroup_by-dplyrsummarise">dplyr::group_by() &amp; dplyr::summarise()</h4>
+<p>Group by organises the data into groups, based on column values. This is useful for performing functions on each group, or summarising the data to calculate summary statistics</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -798,10 +777,10 @@ $ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>penguins_isotopes_tiny <span class="sc">%&lt;&gt;%</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, isotope) <span class="sc">%&gt;%</span> </span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(value),</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span>  <span class="fu">sd</span>(value)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>penguins_isotopes_tiny <span class="sc">%&lt;&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, isotope) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(value),</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span>  <span class="fu">sd</span>(value)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -856,13 +835,14 @@ $ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 </div>
 </section>
-<section id="tidyrpivot_wider-1" class="level4">
-<h4 class="anchored" data-anchor-id="tidyrpivot_wider-1">tidyr::pivot_wider()</h4>
+<section id="tidyrpivot_wider" class="level4">
+<h4 class="anchored" data-anchor-id="tidyrpivot_wider">tidyr::pivot_wider()</h4>
+<p>Transform data from long to wide (observations across multiple columns)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>penguins_isotopes_tiny <span class="sc">%&lt;&gt;%</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> species, </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> isotope, </span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from=</span><span class="fu">c</span>(mean, sd)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>penguins_isotopes_tiny <span class="sc">%&lt;&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> species, </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> isotope, </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from=</span><span class="fu">c</span>(mean, sd)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -905,12 +885,13 @@ $ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </section>
 <section id="dplyr-joins" class="level4">
 <h4 class="anchored" data-anchor-id="dplyr-joins">dplyr joins</h4>
+<p>There are lots of different ways to join multiple dataframes, using shared columns (e.g., an ID column). Here’s an example using left_join(), which keeps all values in the left hand dataframe - in this case penguins_example.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>penguins_example <span class="sc">%&lt;&gt;%</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(penguins_summary_isotopes,</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(species))</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins_example)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>penguins_example <span class="sc">%&lt;&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(penguins_summary_isotopes,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(species))</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins_example)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 333
 Columns: 22

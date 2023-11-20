@@ -56,7 +56,7 @@ penguins_example <- penguins_raw %>%
     # change case in sex column using stringr
     sex = str_to_lower(sex), 
     # take first element of species column string using stringr and purrr
-    species = str_split(species, pattern = " ") %>% map(.,1) %>% unlist()) %>% 
+    species = str_split_i(species, pattern = " ", i = 1)) %>% 
   # remove nas in sex column using dplyr
   filter(!is.na(sex))
 
@@ -107,6 +107,12 @@ ggplot(penguins_example, aes(x = carbon, y = nitrogen, col = species)) +
 
 ```
 
+### How to learn more
+
+-   Each tidyverse package has great documentation and useful cheatsheets, available via [the tidyverse website](https://www.tidyverse.org/)
+-   The book [R for Data Science](https://r4ds.hadley.nz/), which is available online for free, explains how to get your data into R, get it into the most useful structure, transform and visualize it.
+-   For helpful visualisations of how tidyverse functions transform data structures, check out [Garrick Aden-Buie's tidyexplain](https://www.garrickadenbuie.com/project/tidyexplain/)
+-   Liza Wood, now part of the Exeter Data Analytics Hub, has a great tutorial on the tidyverse [on her website](https://liza-wood.github.io/tidyverse_intro/index.html)
 
 ### Some useful functions
 
@@ -115,6 +121,7 @@ Here, I'll dig into the functions used in the above example to see how we proces
 #### janitor::clean_names()
 
 Let's remind ourselves of the original data:
+
 ```{r}
 
 glimpse(penguins_raw)
@@ -131,7 +138,6 @@ penguins_example <- penguins_raw %>%
 glimpse(penguins_example)
 ```
 
-
 #### dplyr::rename()
 
 To rename a column
@@ -145,7 +151,6 @@ penguins_example %<>%
 glimpse(penguins_example)
 ```
 
-
 #### dplyr::mutate()
 
 To add a column
@@ -158,8 +163,6 @@ penguins_example %<>%
 glimpse(penguins_example)
 ```
 
-
-
 #### dplyr::mutate()
 
 To add a column
@@ -167,16 +170,14 @@ To add a column
 ```{r}
 
 penguins_example %<>%
-  mutate(year = "unkown")
+  mutate(year = "unknown")
 
 glimpse(penguins_example)
 ```
 
-
 #### lubridate::year()
 
 Lubridate is great for working with dates and times. Here, we want to extract year from a column of date
-
 
 ```{r}
 penguins_example %<>%
@@ -185,8 +186,6 @@ penguins_example %<>%
 glimpse(penguins_example)
 ```
 
-
-
 #### stringr::str_to_lower()
 
 Change the contents of a column to lower case
@@ -197,25 +196,10 @@ penguins_example %<>%
 
 glimpse(penguins_example)
 ```
-
-
-
-#### stringr::str_to_lower()
-
-Change the contents of a column to lower case
-
-```{r}
-penguins_example %<>%
-  mutate(sex = str_to_lower(sex))
-
-glimpse(penguins_example)
-```
-
 
 #### dplyr::select()
 
 Keep certain columns
-
 
 ```{r}
 penguins_tiny <- penguins_example %>%
@@ -234,8 +218,6 @@ glimpse(penguins_tiny2)
 
 ```
 
-
-
 #### dplyr::filter()
 
 Filter the rows of a dataframe by different criteria
@@ -250,13 +232,14 @@ penguins_tiny %<>%
   filter(!is.na(sex))
 ```
 
-
 ```{r}
 #| echo = FALSE
 knitr::kable(head(penguins_tiny, n = 7))
 ```
 
-#### tidyr::pivot_wider()
+#### tidyr::pivot_longer()
+
+Transform data from wide to long (each observation in a single row)
 
 ```{r}
 #| echo = FALSE
@@ -278,14 +261,11 @@ penguins_example <- penguins_raw %>%
   filter(!is.na(sex))
 ```
 
-
 ```{r}
 penguins_isotopes_tiny <- penguins_example %>% 
   select(species, individual_id, carbon, nitrogen)
 
 ```
-
-
 
 ```{r}
 #| echo = FALSE
@@ -298,7 +278,6 @@ penguins_isotopes_tiny %<>%
 knitr::kable(penguins_isotopes_tiny)
 ```
 
-
 ```{r}
 penguins_isotopes_tiny %<>% 
   pivot_longer(cols = carbon:nitrogen, 
@@ -306,7 +285,10 @@ penguins_isotopes_tiny %<>%
                values_to = "value") 
 
 ```
+
 #### dplyr::group_by() & dplyr::summarise()
+
+Group by organises the data into groups, based on column values. This is useful for performing functions on each group, or summarising the data to calculate summary statistics
 
 ```{r}
 #| echo = FALSE
@@ -329,6 +311,8 @@ knitr::kable(penguins_isotopes_tiny)
 
 #### tidyr::pivot_wider()
 
+Transform data from long to wide (observations across multiple columns)
+
 ```{r}
 #| message: false
 penguins_isotopes_tiny %<>%
@@ -344,6 +328,9 @@ knitr::kable(penguins_isotopes_tiny)
 ```
 
 #### dplyr joins
+
+There are lots of different ways to join multiple dataframes, using shared columns (e.g., an ID column). Here's an example using left_join(), which keeps all values in the left hand dataframe - in this case penguins_example.
+
 ```{r}
 penguins_example %<>%
   left_join(penguins_summary_isotopes,
@@ -351,4 +338,3 @@ penguins_example %<>%
 
 glimpse(penguins_example)
 ```
-
